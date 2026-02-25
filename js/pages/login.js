@@ -5,19 +5,19 @@ function renderLoginPage() {
   app.innerHTML = `
     <div class="auth-page page-enter">
       <div class="auth-card scale-in">
-        <div class="text-center mb-6" style="font-size:3rem;">🛒</div>
+        <div class="text-center mb-6" style="color:var(--color-primary);">${Icons.shoppingCart(48)}</div>
         <h1 class="auth-card__title">${I18n.t('auth.login')}</h1>
         <p class="auth-card__subtitle">${I18n.t('auth.loginSubtitle')}</p>
-        <form id="login-form">
+        <form id="login-form" novalidate>
           <div class="form-group">
             <label class="form-label" for="login-email">${I18n.t('auth.email')}</label>
-            <input type="email" id="login-email" required placeholder="example@company.com" dir="ltr">
+            <input type="email" id="login-email" name="email" required placeholder="example@company.com" dir="ltr" autocomplete="email" spellcheck="false">
           </div>
           <div class="form-group">
             <label class="form-label" for="login-password">${I18n.t('auth.password')}</label>
-            <input type="password" id="login-password" required placeholder="••••••" dir="ltr">
+            <input type="password" id="login-password" name="password" required placeholder="••••••" dir="ltr" autocomplete="current-password">
           </div>
-          <div id="login-error" class="form-error mb-4" style="display:none;"></div>
+          <div id="login-error" class="form-error mb-4" style="display:none;" role="alert" aria-live="assertive"></div>
           <button type="submit" class="btn btn-primary btn-lg btn-ripple" style="width:100%;" id="login-submit">${I18n.t('auth.login')}</button>
         </form>
         <p class="text-center text-sm text-muted mt-6">
@@ -32,7 +32,7 @@ function renderLoginPage() {
     const btn = $('#login-submit');
     const errorEl = $('#login-error');
     errorEl.style.display = 'none';
-    btn.textContent = I18n.t('auth.verifying');
+    btn.innerHTML = `${Icons.loader(14)} ${I18n.t('auth.verifying')}`;
     btn.disabled = true;
 
     try {
@@ -52,6 +52,7 @@ function renderLoginPage() {
     } catch (err) {
       errorEl.textContent = err.message;
       errorEl.style.display = 'block';
+      errorEl.focus();
       btn.textContent = I18n.t('auth.login');
       btn.disabled = false;
     }

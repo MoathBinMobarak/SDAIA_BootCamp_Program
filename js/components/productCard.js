@@ -11,14 +11,14 @@ function renderProductCard(product) {
     : null;
 
   return `
-    <div class="card card-3d product-card" data-slug="${product.slug}" onclick="Router.navigate('/product/${product.slug}')">
+    <a href="#/product/${product.slug}" class="card card-3d product-card" data-slug="${product.slug}" style="text-decoration:none;color:inherit;display:block;">
       <div class="product-card__header">
-        <div class="product-card__logo">${product.logoUrl ? `<img src="${product.logoUrl}" alt="${name}">` : getInitials(name)}</div>
+        <div class="product-card__logo">${product.logoUrl ? `<img src="${product.logoUrl}" alt="${name}" width="40" height="40" loading="lazy">` : getInitials(name)}</div>
         <div class="product-card__info">
           <div class="product-card__name">${name}</div>
           <div class="product-card__company">
             ${companyName}
-            ${product.company?.isVerified ? '<span class="badge badge-verified" title="✓">✓</span>' : ''}
+            ${product.company?.isVerified ? `<span class="badge badge-verified" title="Verified">${Icons.verified(14)}</span>` : ''}
           </div>
         </div>
       </div>
@@ -34,13 +34,13 @@ function renderProductCard(product) {
       : ''}
         </div>
       </div>
-    </div>
+    </a>
   `;
 }
 
 function renderProductGrid(products) {
   if (!products || products.length === 0) {
-    return renderEmptyState(I18n.t('general.noResults'), I18n.t('search.tryDifferent'), '📦');
+    return renderEmptyState(I18n.t('general.noResults'), I18n.t('search.tryDifferent'), Icons.package(48));
   }
   return `<div class="grid grid-auto-fill stagger-in">${products.map(renderProductCard).join('')}</div>`;
 }

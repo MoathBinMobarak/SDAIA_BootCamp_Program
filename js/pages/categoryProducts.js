@@ -38,6 +38,6 @@ async function renderCategoryProductsPage(slug) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   } catch (err) {
-    app.innerHTML = `<div class="page-content"><div class="container">${renderEmptyState(I18n.t('categories.noCategories'), err.message, '📁', I18n.t('categories.title'), '/categories')}</div></div>`;
+    app.innerHTML = `<div class="page-content"><div class="container">${renderEmptyState(I18n.t('categories.noCategories'), err.message, Icons.folder(48), I18n.t('categories.title'), '/categories')}</div></div>`;
   }
 }

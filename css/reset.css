@@ -64,12 +64,30 @@ select {
     width: 100%;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
     outline: none;
     border-color: var(--color-border-focus);
     box-shadow: 0 0 0 3px var(--color-primary-glow);
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    padding: var(--space-3) var(--space-6);
+    background: var(--color-primary);
+    color: white;
+    z-index: 10000;
+    font-weight: 600;
+    border-radius: 0 0 var(--radius-md) 0;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 0;
 }
 
 ul,

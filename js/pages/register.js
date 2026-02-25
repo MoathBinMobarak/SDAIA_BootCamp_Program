@@ -5,23 +5,23 @@ function renderRegisterPage() {
   app.innerHTML = `
     <div class="auth-page page-enter">
       <div class="auth-card scale-in">
-        <div class="text-center mb-6" style="font-size:3rem;">🛒</div>
+        <div class="text-center mb-6" style="color:var(--color-primary);">${Icons.shoppingCart(48)}</div>
         <h1 class="auth-card__title">${I18n.t('auth.register')}</h1>
         <p class="auth-card__subtitle">${I18n.t('auth.registerSubtitle')}</p>
-        <form id="register-form">
+        <form id="register-form" novalidate>
           <div class="form-group">
             <label class="form-label" for="reg-name">${I18n.t('auth.name')}</label>
-            <input type="text" id="reg-name" required placeholder="${I18n.isAr() ? 'الاسم الكامل' : 'Full name'}" minlength="2">
+            <input type="text" id="reg-name" name="name" required placeholder="${I18n.isAr() ? 'الاسم الكامل' : 'Full name'}" minlength="2" autocomplete="name">
           </div>
           <div class="form-group">
             <label class="form-label" for="reg-email">${I18n.t('auth.email')}</label>
-            <input type="email" id="reg-email" required placeholder="example@company.com" dir="ltr">
+            <input type="email" id="reg-email" name="email" required placeholder="example@company.com" dir="ltr" autocomplete="email" spellcheck="false">
           </div>
           <div class="form-group">
             <label class="form-label" for="reg-password">${I18n.t('auth.password')}</label>
-            <input type="password" id="reg-password" required placeholder="${I18n.isAr() ? '6 أحرف على الأقل' : 'At least 6 characters'}" minlength="6" dir="ltr">
+            <input type="password" id="reg-password" name="password" required placeholder="${I18n.isAr() ? '6 أحرف على الأقل' : 'At least 6 characters'}" minlength="6" dir="ltr" autocomplete="new-password">
           </div>
-          <div id="register-error" class="form-error mb-4" style="display:none;"></div>
+          <div id="register-error" class="form-error mb-4" style="display:none;" role="alert" aria-live="assertive"></div>
           <button type="submit" class="btn btn-primary btn-lg btn-ripple" style="width:100%;" id="register-submit">${I18n.t('auth.register')}</button>
         </form>
         <p class="text-center text-sm text-muted mt-6">
@@ -36,7 +36,7 @@ function renderRegisterPage() {
     const btn = $('#register-submit');
     const errorEl = $('#register-error');
     errorEl.style.display = 'none';
-    btn.textContent = I18n.t('auth.creating');
+    btn.innerHTML = `${Icons.loader(14)} ${I18n.t('auth.creating')}`;
     btn.disabled = true;
 
     try {
@@ -54,6 +54,7 @@ function renderRegisterPage() {
     } catch (err) {
       errorEl.textContent = err.message;
       errorEl.style.display = 'block';
+      errorEl.focus();
       btn.textContent = I18n.t('auth.register');
       btn.disabled = false;
     }

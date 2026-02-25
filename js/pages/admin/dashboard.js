@@ -1,8 +1,8 @@
 // ── Admin Dashboard ───────────────────────────────────────────
 
 async function renderAdminDashboard() {
-    const app = $('#app');
-    app.innerHTML = renderAdminLayout(`
+  const app = $('#app');
+  app.innerHTML = renderAdminLayout(`
     <h1 class="text-2xl font-bold mb-8">لوحة التحكم</h1>
     <div class="stats-grid" id="admin-stats">${renderLoader(4)}</div>
     <div class="card p-6">
@@ -11,15 +11,15 @@ async function renderAdminDashboard() {
     </div>
   `, 'dashboard');
 
-    try {
-        const [products, companies, categories, users] = await Promise.all([
-            API.get('/admin/products?limit=1'),
-            API.get('/admin/companies'),
-            API.get('/categories'),
-            API.get('/admin/users'),
-        ]);
+  try {
+    const [products, companies, categories, users] = await Promise.all([
+      API.get('/admin/products?limit=1'),
+      API.get('/admin/companies'),
+      API.get('/categories'),
+      API.get('/admin/users'),
+    ]);
 
-        $('#admin-stats').innerHTML = `
+    $('#admin-stats').innerHTML = `
       <div class="stat-card">
         <div class="stat-card__value">${products.meta?.total || 0}</div>
         <div class="stat-card__label">المنتجات</div>
@@ -37,22 +37,22 @@ async function renderAdminDashboard() {
         <div class="stat-card__label">المستخدمين</div>
       </div>
     `;
-    } catch (err) {
-        Toast.error(err.message);
-    }
+  } catch (err) {
+    Toast.error(err.message);
+  }
 }
 
 function renderAdminLayout(content, activePage = '') {
-    const menuItems = [
-        { label: 'لوحة التحكم', icon: '📊', route: '/admin', key: 'dashboard' },
-        { label: 'المنتجات', icon: '📦', route: '/admin/products', key: 'products' },
-        { label: 'الشركات', icon: '🏢', route: '/admin/companies', key: 'companies' },
-        { label: 'التصنيفات', icon: '📁', route: '/admin/categories', key: 'categories' },
-        { label: 'خطط الاشتراك', icon: '💳', route: '/admin/plans', key: 'plans' },
-        { label: 'المستخدمون', icon: '👤', route: '/admin/users', key: 'users' },
-    ];
+  const menuItems = [
+    { label: 'لوحة التحكم', icon: Icons.barChart(18), route: '/admin', key: 'dashboard' },
+    { label: 'المنتجات', icon: Icons.package(18), route: '/admin/products', key: 'products' },
+    { label: 'الشركات', icon: Icons.building(18), route: '/admin/companies', key: 'companies' },
+    { label: 'التصنيفات', icon: Icons.folder(18), route: '/admin/categories', key: 'categories' },
+    { label: 'خطط الاشتراك', icon: Icons.creditCard(18), route: '/admin/plans', key: 'plans' },
+    { label: 'المستخدمون', icon: Icons.user(18), route: '/admin/users', key: 'users' },
+  ];
 
-    return `
+  return `
     <div class="admin-layout">
       <aside class="admin-sidebar" id="admin-sidebar">
         ${menuItems.map(item => `

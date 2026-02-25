@@ -10,9 +10,9 @@ function renderFooter() {
             <div class="footer__logo gradient-text">SoftMarket</div>
             <p class="footer__desc">${I18n.t('footer.aboutText')}</p>
             <div class="footer__social">
-              <a href="#" class="footer__social-link" aria-label="Twitter">𝕏</a>
-              <a href="#" class="footer__social-link" aria-label="LinkedIn">in</a>
-              <a href="#" class="footer__social-link" aria-label="GitHub">GH</a>
+              <a href="javascript:void(0)" class="footer__social-link" aria-label="Twitter">𝕏</a>
+              <a href="javascript:void(0)" class="footer__social-link" aria-label="LinkedIn">in</a>
+              <a href="javascript:void(0)" class="footer__social-link" aria-label="GitHub">GH</a>
             </div>
           </div>
           <div>

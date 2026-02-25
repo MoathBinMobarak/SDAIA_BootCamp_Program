@@ -15,7 +15,7 @@ async function renderAdminProductList() {
     const container = $('#admin-products-table');
 
     if (result.data.length === 0) {
-      container.innerHTML = renderEmptyState('لا توجد منتجات', 'أضف أول منتج للبدء', '📦', 'إضافة منتج', '/admin/products/new');
+      container.innerHTML = renderEmptyState('لا توجد منتجات', 'أضف أول منتج للبدء', Icons.package(48), 'إضافة منتج', '/admin/products/new');
       return;
     }
 

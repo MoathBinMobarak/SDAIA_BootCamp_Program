@@ -25,8 +25,8 @@ async function renderHomePage() {
           <h1 class="hero__title gradient-text">${I18n.t('hero.title')}</h1>
           <p class="hero__subtitle">${I18n.t('hero.subtitle')}</p>
           <div class="hero__search">
-            <span class="hero__search-icon">🔍</span>
-            <input type="text" id="hero-search" placeholder="${I18n.t('hero.search')}" aria-label="Search">
+            <label for="hero-search" class="hero__search-icon">${Icons.search(18)}</label>
+            <input type="search" id="hero-search" name="search" placeholder="${I18n.t('hero.search')}\u2026" autocomplete="off" aria-label="Search products">
           </div>
           <div class="hero__stats" id="hero-stats">
             <div class="hero__stat"><span class="hero__stat-value counter" data-target="0">0</span><span class="hero__stat-label">${I18n.t('hero.stat.products')}</span></div>
@@ -59,17 +59,17 @@ async function renderHomePage() {
         <h2 class="section-title text-center mb-8">${I18n.t('home.howItWorks')}</h2>
         <div class="grid grid-3 stagger-in" id="how-it-works">
           <div class="card card-3d text-center" style="padding:var(--space-10);">
-            <div style="font-size:3rem;margin-bottom:var(--space-4);">🔍</div>
+            <div style="font-size:3rem;margin-bottom:var(--space-4);color:var(--color-primary);">${Icons.search(40)}</div>
             <h3 class="font-bold text-lg mb-2">${I18n.t('home.step1.title')}</h3>
             <p class="text-secondary text-sm">${I18n.t('home.step1.desc')}</p>
           </div>
           <div class="card card-3d text-center border-gradient" style="padding:var(--space-10);">
-            <div style="font-size:3rem;margin-bottom:var(--space-4);">⚡</div>
+            <div style="font-size:3rem;margin-bottom:var(--space-4);color:var(--color-accent);">${Icons.zap(40)}</div>
             <h3 class="font-bold text-lg mb-2">${I18n.t('home.step2.title')}</h3>
             <p class="text-secondary text-sm">${I18n.t('home.step2.desc')}</p>
           </div>
           <div class="card card-3d text-center" style="padding:var(--space-10);">
-            <div style="font-size:3rem;margin-bottom:var(--space-4);">✅</div>
+            <div style="font-size:3rem;margin-bottom:var(--space-4);color:var(--color-success);">${Icons.checkCircle(40)}</div>
             <h3 class="font-bold text-lg mb-2">${I18n.t('home.step3.title')}</h3>
             <p class="text-secondary text-sm">${I18n.t('home.step3.desc')}</p>
           </div>
@@ -90,7 +90,7 @@ async function renderHomePage() {
           <div class="cta-banner__content">
             <h2 class="text-2xl font-bold mb-2">${I18n.t('home.cta.title')}</h2>
             <p class="text-secondary mb-6">${I18n.t('home.cta.subtitle')}</p>
-            <a href="#/auth/register" class="btn btn-accent btn-lg btn-ripple">${I18n.t('home.cta.btn')}</a>
+            <a href="#/submit" class="btn btn-accent btn-lg btn-ripple">${I18n.t('home.cta.btn')}</a>
           </div>
         </div>
       </section>
@@ -104,48 +104,55 @@ async function renderHomePage() {
     }
   });
 
-  // Load data
+  // Load data (API with DemoData fallback)
+  let categoriesData, featuredData, latestData;
+
   try {
     const [categoriesRes, featuredRes, latestRes] = await Promise.all([
       API.get('/categories'),
       API.get('/products?featured=true&limit=6'),
       API.get('/products?limit=6'),
     ]);
-
-    // Animate counters
-    const counters = $$('.counter');
-    if (counters[0]) animateCounter(counters[0], featuredRes.meta?.total || 10);
-    if (counters[1]) animateCounter(counters[1], categoriesRes.length || 3);
-    if (counters[2]) animateCounter(counters[2], categoriesRes.length || 5);
-
-    // Categories
-    const catContainer = $('#home-categories');
-    if (categoriesRes.length > 0) {
-      const catName = (cat) => I18n.isAr() ? cat.nameAr : (cat.nameEn || cat.nameAr);
-      catContainer.innerHTML = `
-        <div class="categories-grid stagger-in">
-          ${categoriesRes.map(cat => `
-            <div class="category-card card-3d" onclick="Router.navigate('/categories/${cat.slug}')">
-              <div class="category-card__icon float">${getCategoryIcon(cat.icon)}</div>
-              <div class="category-card__name">${catName(cat)}</div>
-              <div class="category-card__count">${cat._count?.products || 0} ${I18n.t('categories.product')}</div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    } else {
-      catContainer.innerHTML = renderEmptyState(I18n.t('categories.noCategories'), '', '📁');
-    }
-
-    // Featured products
-    $('#home-featured').innerHTML = renderProductGrid(featuredRes.data);
-
-    // Latest products
-    $('#home-latest').innerHTML = renderProductGrid(latestRes.data);
-
+    categoriesData = categoriesRes;
+    featuredData = featuredRes.data;
+    latestData = latestRes.data;
   } catch (err) {
-    Toast.error(err.message);
+    // Fallback to demo data silently
+    categoriesData = DemoData.getCategories();
+    featuredData = DemoData.getFeatured();
+    latestData = DemoData.getLatest();
   }
+
+  // Animate counters
+  const counters = $$('.counter');
+  if (counters[0]) animateCounter(counters[0], featuredData.length + latestData.length || 8);
+  if (counters[1]) animateCounter(counters[1], DemoData.getCompanies().length || 4);
+  if (counters[2]) animateCounter(counters[2], categoriesData.length || 5);
+
+  // Categories
+  const catContainer = $('#home-categories');
+  if (categoriesData.length > 0) {
+    const catName = (cat) => I18n.isAr() ? cat.nameAr : (cat.nameEn || cat.nameAr);
+    catContainer.innerHTML = `
+      <div class="categories-grid stagger-in">
+        ${categoriesData.map(cat => `
+          <a href="#/categories/${cat.slug}" class="category-card card-3d" style="text-decoration:none;color:inherit;display:block;">
+            <div class="category-card__icon float">${getCategoryIcon(cat.icon)}</div>
+            <div class="category-card__name">${catName(cat)}</div>
+            <div class="category-card__count">${cat._count?.products || 0} ${I18n.t('categories.product')}</div>
+          </a>
+        `).join('')}
+      </div>
+    `;
+  } else {
+    catContainer.innerHTML = renderEmptyState(I18n.t('categories.noCategories'), '', Icons.folder(48));
+  }
+
+  // Featured products
+  $('#home-featured').innerHTML = renderProductGrid(featuredData);
+
+  // Latest products
+  $('#home-latest').innerHTML = renderProductGrid(latestData);
 }
 
 function animateCounter(el, target) {

@@ -54,21 +54,27 @@ function getInitials(name) {
 }
 
 const CATEGORY_ICONS = {
-    clipboard: '📋',
-    users: '👥',
-    calculator: '🧮',
-    megaphone: '📢',
-    briefcase: '💼',
-    chart: '📊',
-    globe: '🌐',
-    shield: '🛡️',
-    zap: '⚡',
-    code: '💻',
-    default: '📦',
+    clipboard: () => Icons.clipboard(18),
+    users: () => Icons.users(18),
+    calculator: () => Icons.barChart(18),
+    megaphone: () => Icons.megaphone(18),
+    briefcase: () => Icons.briefcase(18),
+    chart: () => Icons.barChart(18),
+    globe: () => Icons.globe(18),
+    shield: () => Icons.shield(18),
+    zap: () => Icons.zap(18),
+    code: () => Icons.code(18),
+    project: () => Icons.clipboard(18),
+    finance: () => Icons.creditCard(18),
+    analytics: () => Icons.barChart(18),
+    security: () => Icons.shield(18),
+    communication: () => Icons.messageCircle(18),
+    default: () => Icons.package(18),
 };
 
 function getCategoryIcon(icon) {
-    return CATEGORY_ICONS[icon] || CATEGORY_ICONS.default;
+    const fn = CATEGORY_ICONS[icon] || CATEGORY_ICONS.default;
+    return fn();
 }
 
 function getPreviewLabel(type) {

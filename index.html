@@ -1,203 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr" style="color-scheme: dark;">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SecureScan — Security Score Tool</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoftMarket — Cloud Software Directory</title>
   <meta name="description"
-    content="Analyze URL security (HTTPS, SSL, headers) and check password strength — all in one beautiful dashboard." />
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    content="Discover, compare, and try the best cloud software for businesses in the MENA region">
+  <meta property="og:title" content="SoftMarket — Cloud Software Directory">
+  <meta property="og:description" content="A comprehensive platform for discovering and comparing SaaS products">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0a0a1a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400&display=swap"
-    rel="stylesheet" />
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css" />
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/animations.css">
 </head>
+
 <body>
-  <!-- ====== Animated Background Orbs ====== -->
-  <div class="bg-orbs" aria-hidden="true">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="orb orb-4"></div>
+  <a href="#app" class="skip-link">Skip to main content</a>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation"></nav>
+
+  <!-- Main Content -->
+  <main id="app"></main>
+
+  <!-- Footer -->
+  <footer id="footer"></footer>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Floating Action Buttons -->
+  <div class="fab-container" id="fab-container">
+    <button class="fab fab-lang" id="fab-lang" aria-label="Toggle Language"></button>
+    <button class="fab fab-theme" id="fab-theme" aria-label="Toggle Theme"></button>
+    <button class="fab fab-top" id="fab-top" aria-label="Back to top">↑</button>
   </div>
-  <!-- ====== Page Wrapper (fade-in) ====== -->
-  <div class="page-wrapper">
-    <!-- ====== Navbar ====== -->
-    <nav class="glass navbar" aria-label="Main navigation">
-      <div class="logo">
-        <div class="logo-icon" aria-hidden="true">🛡</div>
-        <span>SecureScan</span>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#" class="active" id="nav-dashboard">Dashboard</a></li>
-        <li><a href="#results" id="nav-results">Results</a></li>
-        <li><a href="#json-output" id="nav-json">JSON</a></li>
-      </ul>
-    </nav>
-    <!-- ====== Main Content ====== -->
-    <main class="main-container">
-      <!-- Hero -->
-      <section class="hero">
-        <h1>Security Score Tool</h1>
-        <p class="subtitle">Scan URLs for HTTPS &amp; SSL safety, check password strength — all in one place.</p>
-      </section>
-      <!-- Tab Navigation -->
-      <div class="tab-nav" role="tablist">
-        <button class="tab-btn active" id="tab-url" role="tab" aria-selected="true" aria-controls="panel-url">
-          <span class="tab-icon">🔍</span>
-          URL Scanner
-        </button>
-        <button class="tab-btn" id="tab-password" role="tab" aria-selected="false" aria-controls="panel-password">
-          <span class="tab-icon">🔑</span>
-          Password Checker
-        </button>
-      </div>
-      <!-- ═══════════════════════════════════
-           TAB 1: URL Scanner
-           ═══════════════════════════════════ -->
-      <div class="tab-panel active" id="panel-url" role="tabpanel">
-        <!-- URL Input -->
-        <section class="scan-section glass" id="scan-section">
-          <input type="url" class="tool-input" id="url-input" placeholder="https://example.com" autocomplete="url"
-            aria-label="Enter URL to scan" />
-          <button class="action-btn" id="scan-btn" type="button">
-            <span class="btn-text">Scan URL</span>
-            <span class="spinner" aria-hidden="true"></span>
-          </button>
-        </section>
-        <!-- Error Message -->
-        <p class="feedback-msg error" id="url-error" role="alert"></p>
-        <!-- Score Section -->
-        <section class="score-section" id="score-section">
-          <div class="score-ring-container">
-            <svg class="score-ring" viewBox="0 0 200 200" aria-hidden="true">
-              <circle class="ring-bg" cx="100" cy="100" r="90" />
-              <circle class="ring-progress" id="ring-progress" cx="100" cy="100" r="90" />
-            </svg>
-            <span class="score-value" id="score-value" aria-live="polite">0</span>
-          </div>
-          <div class="score-meta">
-            <span class="score-label">Security Score</span>
-            <span class="score-grade" id="score-grade">—</span>
-            <p class="scan-status" id="scan-status"></p>
-          </div>
-        </section>
-        <!-- Result Cards -->
-        <section class="results-grid" id="results-grid" aria-label="Scan results">
-          <article class="glass result-card" id="https-card">
-            <div class="card-icon" id="https-icon">🔒</div>
-            <h3 class="card-title">HTTPS</h3>
-            <p class="card-status" id="https-status">—</p>
-            <p class="card-message" id="https-message">Waiting for scan…</p>
-            <p class="card-score" id="https-score"></p>
-          </article>
-          <article class="glass result-card" id="ssl-card">
-            <div class="card-icon" id="ssl-icon">📜</div>
-            <h3 class="card-title">SSL Certificate</h3>
-            <p class="card-status" id="ssl-status">—</p>
-            <p class="card-message" id="ssl-message">Waiting for scan…</p>
-            <p class="card-score" id="ssl-score"></p>
-          </article>
-          <article class="glass result-card" id="headers-card">
-            <div class="card-icon" id="headers-icon">🛡</div>
-            <h3 class="card-title">Security Headers</h3>
-            <p class="card-status" id="headers-status">—</p>
-            <p class="card-message" id="headers-message">Waiting for scan…</p>
-            <p class="card-score" id="headers-score"></p>
-          </article>
-        </section>
-        <!-- JSON Output Panel -->
-        <section class="glass json-panel" id="json-panel">
-          <div class="panel-header">
-            <h3>📋 Scan Output (JSON)</h3>
-            <button class="copy-btn" id="copy-btn" type="button">Copy</button>
-          </div>
-          <pre id="json-output">Scan results will appear here…</pre>
-        </section>
-      </div>
-      <!-- ═══════════════════════════════════
-           TAB 2: Password Checker
-           ═══════════════════════════════════ -->
-      <div class="tab-panel" id="panel-password" role="tabpanel">
-        <!-- Password Input -->
-        <section class="password-section">
-          <div class="glass password-input-wrap" id="password-section">
-            <input type="password" class="tool-input" id="password-input" placeholder="Type a password to check…"
-              autocomplete="new-password" aria-label="Enter password to check" />
-            <button class="toggle-visibility" id="toggle-pw-visibility" type="button" aria-label="Show/hide password">
-              👁
-            </button>
-            <button class="action-btn" id="check-pw-btn" type="button">
-              <span class="btn-text">Check</span>
-              <span class="spinner" aria-hidden="true"></span>
-            </button>
-          </div>
-        </section>
-        <!-- Strength Meter -->
-        <section class="strength-section" id="strength-section">
-          <div class="glass strength-meter" id="strength-meter">
-            <p class="strength-label" id="strength-label">—</p>
-            <p class="strength-score-text" id="strength-score-text">Enter a password above</p>
-            <div class="strength-bar-wrapper">
-              <div class="strength-bar" id="strength-bar"></div>
-            </div>
-          </div>
-        </section>
-        <!-- Criteria Checklist -->
-        <div class="criteria-grid" id="criteria-grid">
-          <div class="criteria-item" id="crit-length">
-            <span class="check-icon">✓</span>
-            <span class="criteria-text">At least 8 characters</span>
-          </div>
-          <div class="criteria-item" id="crit-uppercase">
-            <span class="check-icon">✓</span>
-            <span class="criteria-text">Uppercase letter (A–Z)</span>
-          </div>
-          <div class="criteria-item" id="crit-lowercase">
-            <span class="check-icon">✓</span>
-            <span class="criteria-text">Lowercase letter (a–z)</span>
-          </div>
-          <div class="criteria-item" id="crit-number">
-            <span class="check-icon">✓</span>
-            <span class="criteria-text">Number (0–9)</span>
-          </div>
-          <div class="criteria-item" id="crit-special">
-            <span class="check-icon">✓</span>
-            <span class="criteria-text">Special character (!@#$…)</span>
-          </div>
-          <div class="criteria-item" id="crit-long">
-            <span class="check-icon">✓</span>
-            <span class="criteria-text">12+ characters (bonus)</span>
-          </div>
-        </div>
-        <!-- Dynamic Suggestions -->
-        <section class="glass pw-suggestions" id="pw-suggestions">
-          <h3>🎯 Suggestions</h3>
-          <ul class="tips-list" id="suggestions-list">
-            <li><span class="tip-icon">✏️</span> Start typing a password to see suggestions…</li>
-          </ul>
-        </section>
-        <!-- Password Tips -->
-        <section class="glass password-tips" id="password-tips">
-          <h3>💡 Strong Password Tips</h3>
-          <ul class="tips-list">
-            <li><span class="tip-icon">🔹</span> Use a passphrase — combine 4+ random words</li>
-            <li><span class="tip-icon">🔹</span> Avoid personal info (birthdays, names, pet names)</li>
-            <li><span class="tip-icon">🔹</span> Never reuse passwords across different sites</li>
-            <li><span class="tip-icon">🔹</span> Consider using a password manager for unique passwords</li>
-          </ul>
-        </section>
-      </div>
-    </main>
-    <!-- Footer -->
-    <footer class="footer">
-      <p>SecureScan v2.0 — Security Score Tool &copy; 2026 &middot; Built with 🧠 by your team</p>
-    </footer>
-  </div><!-- /page-wrapper -->
-  <!-- JavaScript -->
-  <script src="app.js"></script>
+
+  <!-- Scripts -->
+  <script src="js/utils/dom.js"></script>
+  <script src="js/utils/icons.js"></script>
+  <script src="js/utils/format.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/demoData.js"></script>
+  <script src="js/components/toast.js"></script>
+  <script src="js/components/navbar.js"></script>
+  <script src="js/components/footer.js"></script>
+  <script src="js/components/productCard.js"></script>
+  <script src="js/components/planCard.js"></script>
+  <script src="js/components/emptyState.js"></script>
+  <script src="js/components/loader.js"></script>
+  <script src="js/components/pagination.js"></script>
+  <script src="js/components/modal.js"></script>
+  <script src="js/components/previewPanel.js"></script>
+  <script src="js/pages/home.js"></script>
+  <script src="js/pages/explore.js"></script>
+  <script src="js/pages/productDetail.js"></script>
+  <script src="js/pages/companyProfile.js"></script>
+  <script src="js/pages/categories.js"></script>
+  <script src="js/pages/categoryProducts.js"></script>
+  <script src="js/pages/searchResults.js"></script>
+  <script src="js/pages/login.js"></script>
+  <script src="js/pages/register.js"></script>
+  <script src="js/pages/bookmarks.js"></script>
+  <script src="js/pages/showcase.js"></script>
+  <script src="js/pages/submit.js"></script>
+  <script src="js/pages/admin/dashboard.js"></script>
+  <script src="js/pages/admin/productList.js"></script>
+  <script src="js/pages/admin/productForm.js"></script>
+  <script src="js/pages/admin/companyList.js"></script>
+  <script src="js/pages/admin/companyForm.js"></script>
+  <script src="js/pages/admin/categoryList.js"></script>
+  <script src="js/pages/admin/planList.js"></script>
+  <script src="js/pages/admin/userList.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/app.js"></script>
 </body>
+
 </html>

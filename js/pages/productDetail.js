@@ -36,7 +36,7 @@ async function renderProductDetailPage(slug) {
               <div class="flex gap-3 flex-wrap mb-4">
                 <a href="#/company/${product.company?.slug}" class="badge badge-primary" style="text-decoration:none;">
                   ${companyName}
-                  ${product.company?.isVerified ? ' ✓' : ''}
+                  ${product.company?.isVerified ? ` ${Icons.verified(14)}` : ''}
                 </a>
                 <a href="#/categories/${product.category?.slug}" class="chip" style="font-size:0.8rem;text-decoration:none;">
                   ${getCategoryIcon(product.category?.icon)} ${catName}
@@ -101,6 +101,6 @@ async function renderProductDetailPage(slug) {
       });
     }
   } catch (err) {
-    app.innerHTML = `<div class="page-content"><div class="container">${renderEmptyState(I18n.t('product.notFound'), err.message, '🔍', I18n.t('general.backHome'), '/')}</div></div>`;
+    app.innerHTML = `<div class="page-content"><div class="container">${renderEmptyState(I18n.t('product.notFound'), err.message, Icons.search(48), I18n.t('general.backHome'), '/')}</div></div>`;
   }
 }

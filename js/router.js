@@ -34,10 +34,10 @@ const Router = (() => {
       <div class="page-content">
         <div class="container">
           <div class="empty-state">
-            <div class="empty-state__icon">🌌</div>
-            <div class="empty-state__title">الصفحة غير موجودة</div>
-            <div class="empty-state__text">الرابط الذي طلبته غير موجود في SoftMarket</div>
-            <a href="#/" class="btn btn-primary">العودة للرئيسية</a>
+            <div class="empty-state__icon" style="color:var(--color-primary);">${Icons.compass(48)}</div>
+            <div class="empty-state__title">${I18n.isAr() ? '\u0627\u0644\u0635\u0641\u062d\u0629 \u063a\u064a\u0631 \u0645\u0648\u062c\u0648\u062f\u0629' : 'Page Not Found'}</div>
+            <div class="empty-state__text">${I18n.isAr() ? '\u0627\u0644\u0631\u0627\u0628\u0637 \u0627\u0644\u0630\u064a \u0637\u0644\u0628\u062a\u0647 \u063a\u064a\u0631 \u0645\u0648\u062c\u0648\u062f \u0641\u064a SoftMarket' : 'The link you requested was not found on SoftMarket'}</div>
+            <a href="#/" class="btn btn-primary">${I18n.isAr() ? '\u0627\u0644\u0639\u0648\u062f\u0629 \u0644\u0644\u0631\u0626\u064a\u0633\u064a\u0629' : 'Back to Home'}</a>
           </div>
         </div>
       </div>

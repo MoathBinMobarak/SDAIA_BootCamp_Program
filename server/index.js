@@ -12,6 +12,7 @@ const categoryRoutes = require('./routes/categories');
 const planRoutes = require('./routes/plans');
 const bookmarkRoutes = require('./routes/bookmarks');
 const adminRoutes = require('./routes/admin');
+const submissionRoutes = require('./routes/submissions');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -57,6 +58,7 @@ app.use('/api/v1/categories', apiLimiter, categoryRoutes);
 app.use('/api/v1/plans', apiLimiter, planRoutes);
 app.use('/api/v1/me/bookmarks', apiLimiter, bookmarkRoutes);
 app.use('/api/v1/admin', apiLimiter, adminRoutes);
+app.use('/api/v1/submissions', rateLimit({ windowMs: 60 * 1000, max: 10, message: { error: 'محاولات كثيرة. حاول بعد دقيقة.' } }), submissionRoutes);
 
 // ── SPA Fallback ──────────────────────────────────────────────
 app.get('*', (req, res) => {

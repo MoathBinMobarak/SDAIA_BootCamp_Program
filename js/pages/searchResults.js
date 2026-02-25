@@ -17,14 +17,14 @@ async function renderSearchResultsPage() {
   `;
 
     if (!query) {
-        $('#search-results').innerHTML = renderEmptyState(I18n.t('search.enterQuery'), '', '🔍');
+        $('#search-results').innerHTML = renderEmptyState(I18n.t('search.enterQuery'), '', Icons.search(48));
         return;
     }
 
     try {
         const result = await API.get(`/products?search=${encodeURIComponent(query)}&limit=12`);
         if (result.data.length === 0) {
-            $('#search-results').innerHTML = renderEmptyState(I18n.t('search.noResults'), `${I18n.t('search.tryDifferent')}`, '🔍', I18n.t('search.browseAll'), '/explore');
+            $('#search-results').innerHTML = renderEmptyState(I18n.t('search.noResults'), `${I18n.t('search.tryDifferent')}`, Icons.search(48), I18n.t('search.browseAll'), '/explore');
         } else {
             $('#search-results').innerHTML = renderProductGrid(result.data);
         }
@@ -36,6 +36,6 @@ async function renderSearchResultsPage() {
             attachPaginationHandlers(arguments.callee);
         });
     } catch (err) {
-        $('#search-results').innerHTML = renderEmptyState(I18n.t('general.error'), err.message, '⚠️');
+        $('#search-results').innerHTML = renderEmptyState(I18n.t('general.error'), err.message, Icons.alertCircle(48));
     }
 }

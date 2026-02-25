@@ -93,6 +93,6 @@ async function loadExploreProducts(page) {
     paginationContainer.innerHTML = renderPagination(result.meta, loadExploreProducts);
     attachPaginationHandlers(loadExploreProducts);
   } catch (err) {
-    productsContainer.innerHTML = renderEmptyState(I18n.t('general.error'), err.message, '⚠️');
+    productsContainer.innerHTML = renderEmptyState(I18n.t('general.error'), err.message, Icons.alertCircle(48));
   }
 }

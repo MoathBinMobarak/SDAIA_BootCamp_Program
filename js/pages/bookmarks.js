@@ -12,7 +12,7 @@ async function renderBookmarksPage() {
         const container = $('#bookmarks-list');
 
         if (bookmarks.length === 0) {
-            container.innerHTML = renderEmptyState(I18n.t('bookmarks.empty'), I18n.t('bookmarks.emptyText'), '🤍', I18n.t('search.browseAll'), '/explore');
+            container.innerHTML = renderEmptyState(I18n.t('bookmarks.empty'), I18n.t('bookmarks.emptyText'), Icons.heart(48), I18n.t('search.browseAll'), '/explore');
             return;
         }
 

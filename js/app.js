@@ -4,11 +4,14 @@
     // ── Theme Management ─────────────────────────────────
     const savedTheme = localStorage.getItem('gc_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
+    // Sync color-scheme with theme
+    document.documentElement.style.colorScheme = savedTheme;
 
     function toggleTheme() {
         const current = document.documentElement.getAttribute('data-theme');
         const next = current === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
+        document.documentElement.style.colorScheme = next;
         localStorage.setItem('gc_theme', next);
         updateFABs();
     }
@@ -26,8 +29,8 @@
         const theme = document.documentElement.getAttribute('data-theme') || 'dark';
         const langBtn = $('#fab-lang');
         const themeBtn = $('#fab-theme');
-        if (langBtn) langBtn.textContent = I18n.t('lang.toggle');
-        if (themeBtn) themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+        if (langBtn) langBtn.innerHTML = Icons.languages(16);
+        if (themeBtn) themeBtn.innerHTML = theme === 'dark' ? Icons.sun(16) : Icons.moon(16);
     }
 
     // ── Route Definitions ──────────────────────────────────────
@@ -40,6 +43,13 @@
     Router.add('/categories', () => renderCategoriesPage());
     Router.add('/categories/:slug', (params) => renderCategoryProductsPage(params.slug));
     Router.add('/search', () => renderSearchResultsPage());
+
+    // Showcase (demo products)
+    Router.add('/showcase', () => renderShowcasePage());
+    Router.add('/showcase/:slug', (params) => renderShowcaseDetailPage(params.slug));
+
+    // Submit (public product submission)
+    Router.add('/submit', () => renderSubmitPage());
 
     // Auth
     Router.add('/auth/login', () => {
@@ -98,15 +108,21 @@
     if (fabTheme) fabTheme.addEventListener('click', toggleTheme);
     if (fabTop) fabTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    // Back-to-top visibility
+    // ── Throttled Scroll Handler (single listener) ─────────────
+    let ticking = false;
     window.addEventListener('scroll', () => {
-        if (fabTop) fabTop.classList.toggle('visible', window.scrollY > 400);
-    });
-
-    // ── Navbar Scroll Effect ───────────────────────────────────
-    window.addEventListener('scroll', () => {
-        const navbar = $('#navbar');
-        if (navbar) navbar.classList.toggle('navbar--scrolled', window.scrollY > 20);
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                const scrollY = window.scrollY;
+                // Back-to-top visibility
+                if (fabTop) fabTop.classList.toggle('visible', scrollY > 400);
+                // Navbar scroll effect
+                const navbar = $('#navbar');
+                if (navbar) navbar.classList.toggle('navbar--scrolled', scrollY > 20);
+                ticking = false;
+            });
+            ticking = true;
+        }
     });
 
     // ── Button Ripple Effect ───────────────────────────────────

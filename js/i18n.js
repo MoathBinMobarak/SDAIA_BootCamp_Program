@@ -1,7 +1,7 @@
 // ── Internationalization (AR ↔ EN) ────────────────────────────
 
 const I18n = (() => {
-    let currentLang = localStorage.getItem('gc_lang') || 'ar';
+    let currentLang = localStorage.getItem('gc_lang') || 'en';
 
     const translations = {
         ar: {
@@ -57,8 +57,8 @@ const I18n = (() => {
             'product.plans': 'خطط الاشتراك',
             'product.visit': 'زيارة الموقع ↗',
             'product.tryIt': 'جرّب المنتج',
-            'product.save': '🤍 حفظ',
-            'product.saved': '❤️ تم الحفظ',
+            'product.save': 'حفظ',
+            'product.saved': 'تم الحفظ',
             'product.savedNotify': 'تم حفظ المنتج',
             'product.removedNotify': 'تم إزالة المنتج من المحفوظات',
             'product.notFound': 'المنتج غير موجود',
@@ -72,9 +72,9 @@ const I18n = (() => {
             'product.related': 'منتجات مشابهة',
 
             // Preview
-            'preview.live': '🖥️ معاينة حية',
-            'preview.video': '🎬 فيديو توضيحي',
-            'preview.screenshots': '📸 صور المنتج',
+            'preview.live': 'معاينة حية',
+            'preview.video': 'فيديو توضيحي',
+            'preview.screenshots': 'صور المنتج',
 
             // Company
             'company.products': 'منتجات الشركة',
@@ -167,12 +167,23 @@ const I18n = (() => {
             'footer.terms': 'الشروط والأحكام',
             'footer.faq': 'الأسئلة الشائعة',
             'footer.copyright': '© 2026 SoftMarket. جميع الحقوق محفوظة.',
-            'footer.madeWith': 'صُنع بـ 💜 في المنطقة العربية',
+            'footer.madeWith': 'صُنع بكل حب في المنطقة العربية',
+
+            // Showcase
+            'showcase.badge': 'معرض المنتجات',
+            'showcase.title': 'استكشف أفضل البرمجيات السحابية',
+            'showcase.subtitle': 'تصفح مجموعة مختارة من أفضل الحلول البرمجية وتعرّف على ميزاتها وخططها',
+            'showcase.nav': 'المعرض',
+            'showcase.cta.title': 'هذه مجرد عينة!',
+            'showcase.cta.subtitle': 'سيتم إضافة المزيد من المنتجات قريبًا. هل لديك منتج تريد إضافته؟',
 
             // Theme
-            'theme.dark': '🌙',
-            'theme.light': '☀️',
+            'theme.dark': 'dark',
+            'theme.light': 'light',
             'lang.toggle': 'EN',
+
+            // Submit
+            'submit.nav': 'أضف منتجك',
         },
         en: {
             // Nav
@@ -227,8 +238,8 @@ const I18n = (() => {
             'product.plans': 'Subscription Plans',
             'product.visit': 'Visit Website ↗',
             'product.tryIt': 'Try Product',
-            'product.save': '🤍 Save',
-            'product.saved': '❤️ Saved',
+            'product.save': 'Save',
+            'product.saved': 'Saved',
             'product.savedNotify': 'Product saved',
             'product.removedNotify': 'Product removed from bookmarks',
             'product.notFound': 'Product not found',
@@ -242,9 +253,9 @@ const I18n = (() => {
             'product.related': 'Similar Products',
 
             // Preview
-            'preview.live': '🖥️ Live Demo',
-            'preview.video': '🎬 Demo Video',
-            'preview.screenshots': '📸 Screenshots',
+            'preview.live': 'Live Demo',
+            'preview.video': 'Demo Video',
+            'preview.screenshots': 'Screenshots',
 
             // Company
             'company.products': 'Company Products',
@@ -337,17 +348,28 @@ const I18n = (() => {
             'footer.terms': 'Terms & Conditions',
             'footer.faq': 'FAQ',
             'footer.copyright': '© 2026 SoftMarket. All rights reserved.',
-            'footer.madeWith': 'Made with 💜 in the MENA region',
+            'footer.madeWith': 'Made with love in the MENA region',
+
+            // Showcase
+            'showcase.badge': 'Product Showcase',
+            'showcase.title': 'Explore Top Cloud Software',
+            'showcase.subtitle': 'Browse a curated collection of the best SaaS solutions and discover their features and plans',
+            'showcase.nav': 'Showcase',
+            'showcase.cta.title': 'This is just a preview!',
+            'showcase.cta.subtitle': 'More products will be added soon. Have a product you want to list?',
 
             // Theme
-            'theme.dark': '🌙',
-            'theme.light': '☀️',
+            'theme.dark': 'dark',
+            'theme.light': 'light',
             'lang.toggle': 'عربي',
+
+            // Submit
+            'submit.nav': 'Add Product',
         },
     };
 
     function t(key) {
-        return translations[currentLang]?.[key] || translations['ar']?.[key] || key;
+        return translations[currentLang]?.[key] || translations['en']?.[key] || key;
     }
 
     function getLang() {

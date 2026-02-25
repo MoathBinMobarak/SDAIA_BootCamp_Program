@@ -23,7 +23,7 @@ async function renderCategoriesPage() {
         </div>
       `;
     } else {
-      grid.innerHTML = renderEmptyState(I18n.t('categories.noCategories'), '', '📁');
+      grid.innerHTML = renderEmptyState(I18n.t('categories.noCategories'), '', Icons.folder(48));
     }
   } catch (err) {
     Toast.error(err.message);

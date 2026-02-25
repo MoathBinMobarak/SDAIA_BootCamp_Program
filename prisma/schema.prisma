@@ -161,6 +161,23 @@ model Bookmark {
   @@map("bookmarks")
 }
 
+// ─── Submission (طلب إضافة منتج) ──────────────────────────────
+
+model Submission {
+  id           String   @id @default(uuid())
+  payload      Json
+  contactEmail String   @map("contact_email")
+  contactName  String   @default("") @map("contact_name")
+  productName  String   @map("product_name")
+  companyName  String   @map("company_name")
+  status       String   @default("pending") // pending, approved, rejected
+  adminNotes   String?  @map("admin_notes") @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("submissions")
+}
+
 // ─── Refresh Token ────────────────────────────────────────────
 
 model RefreshToken {
