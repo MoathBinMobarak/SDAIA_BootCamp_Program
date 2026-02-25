@@ -1,0 +1,176 @@
+// SoftMarket — Prisma Schema
+// Arabic-first SaaS Directory
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Company (شركة) ───────────────────────────────────────────
+
+model Company {
+  id            String    @id @default(uuid())
+  nameAr        String    @map("name_ar")
+  nameEn        String?   @map("name_en")
+  slug          String    @unique
+  logoUrl       String?   @map("logo_url")
+  descriptionAr String?   @map("description_ar") @db.Text
+  website       String?
+  country       String?
+  foundedYear   Int?      @map("founded_year")
+  isVerified    Boolean   @default(false) @map("is_verified")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  products Product[]
+
+  @@map("companies")
+}
+
+// ─── Category (تصنيف) ─────────────────────────────────────────
+
+model Category {
+  id        String     @id @default(uuid())
+  parentId  String?    @map("parent_id")
+  nameAr    String     @map("name_ar")
+  nameEn    String?    @map("name_en")
+  slug      String     @unique
+  icon      String?
+  sortOrder Int        @default(0) @map("sort_order")
+
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryTree")
+  products Product[]
+
+  @@map("categories")
+}
+
+// ─── Product (منتج) ───────────────────────────────────────────
+
+enum ProductStatus {
+  draft
+  published
+  archived
+}
+
+enum PreviewType {
+  iframe
+  video
+  screenshots
+  none
+}
+
+model Product {
+  id            String        @id @default(uuid())
+  companyId     String        @map("company_id")
+  categoryId    String        @map("category_id")
+  nameAr        String        @map("name_ar")
+  nameEn        String?       @map("name_en")
+  slug          String        @unique
+  taglineAr     String?       @map("tagline_ar")
+  descriptionAr String?       @map("description_ar") @db.Text
+  logoUrl       String?       @map("logo_url")
+  screenshots   Json?         @default("[]")
+  website       String?
+  demoUrl       String?       @map("demo_url")
+  demoVideoUrl  String?       @map("demo_video_url")
+  previewType   PreviewType   @default(none) @map("preview_type")
+  isFeatured    Boolean       @default(false) @map("is_featured")
+  status        ProductStatus @default(draft)
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  company      Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  category     Category      @relation(fields: [categoryId], references: [id])
+  productPlans ProductPlan[]
+  bookmarks    Bookmark[]
+
+  @@map("products")
+}
+
+// ─── Subscription Plan (خطة اشتراك) ──────────────────────────
+
+model SubscriptionPlan {
+  id     String @id @default(uuid())
+  nameAr String @map("name_ar")
+  nameEn String? @map("name_en")
+  tier   Int    @default(0)
+
+  productPlans ProductPlan[]
+
+  @@map("subscription_plans")
+}
+
+// ─── Product Plan / Pricing (تسعير المنتج) ────────────────────
+
+model ProductPlan {
+  id           String  @id @default(uuid())
+  productId    String  @map("product_id")
+  planId       String  @map("plan_id")
+  priceMonthly Float?  @map("price_monthly")
+  priceYearly  Float?  @map("price_yearly")
+  currency     String  @default("SAR")
+  features     Json?   @default("[]")
+  isPopular    Boolean @default(false) @map("is_popular")
+
+  product Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  plan    SubscriptionPlan @relation(fields: [planId], references: [id])
+
+  @@map("product_plans")
+}
+
+// ─── User (مستخدم) ────────────────────────────────────────────
+
+enum UserRole {
+  user
+  vendor
+  admin
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  name         String
+  role         UserRole @default(user)
+  avatarUrl    String?  @map("avatar_url")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  bookmarks     Bookmark[]
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+// ─── Bookmark (محفوظ) ─────────────────────────────────────────
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  productId String   @map("product_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("bookmarks")
+}
+
+// ─── Refresh Token ────────────────────────────────────────────
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}

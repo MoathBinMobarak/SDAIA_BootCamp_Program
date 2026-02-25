@@ -1,0 +1,35 @@
+{
+  "name": "softmarket",
+  "version": "1.0.0",
+  "description": "Arabic-first SaaS directory for discovering, comparing, and test-driving software products",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "node server/index.js",
+    "seed": "node server/seed.js",
+    "migrate": "npx prisma migrate dev",
+    "studio": "npx prisma studio"
+  },
+  "keywords": [
+    "saas",
+    "directory",
+    "arabic",
+    "rtl"
+  ],
+  "author": "MoathBinMobarak",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^6.4.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.4.1"
+  }
+}
